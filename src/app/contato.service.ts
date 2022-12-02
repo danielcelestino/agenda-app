@@ -15,16 +15,16 @@ export class ContatoService {
     private http: HttpClient
   ) { }
 
-  salvar(cliente : Contato ) : Observable<Contato> {
-    return this.http.post<Contato>(`${this.apiURL}`, cliente);
+  salvar(contato : Contato ) : Observable<Contato> {
+    return this.http.post<Contato>(`${this.apiURL}`, contato);
   }
 
-  atualizar(cliente : Contato) : Observable<any> {
-    return this.http.put<Contato>(`${this.apiURL}/${cliente.id}`, cliente);
+  atualizar(contato : Contato) : Observable<any> {
+    return this.http.put<Contato>(`${this.apiURL}/${contato.id}`, contato);
   }
 
-  favoritar(cliente : Contato) : Observable<any> {
-    return this.http.patch<Contato>(`${this.apiURL}/${cliente.id}/favorito`, null);
+  favoritar(contato : Contato) : Observable<any> {
+    return this.http.patch<Contato>(`${this.apiURL}/${contato.id}/favorito`, null);
   }
 
   listarContatos() : Observable<Contato[]>{    
@@ -39,5 +39,9 @@ export class ContatoService {
 
   deleteContato(id : number) : Observable<any>{
     return this.http.delete<any>(`${this.apiURL}/${id}`);    
+  }
+
+  upload(contato: Contato, formData: FormData): Observable<any>{
+    return this.http.put(`${this.apiURL}/${contato.id}/foto`, formData, {responseType: 'blob'});
   }
 }
