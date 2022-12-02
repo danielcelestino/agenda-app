@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Contato } from './contato/contato';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { PaginaContato } from './contato/paginaContato';
 
 @Injectable({
   providedIn: 'root'
@@ -27,10 +28,16 @@ export class ContatoService {
     return this.http.patch<Contato>(`${this.apiURL}/${contato.id}/favorito`, null);
   }
 
-  listarContatos() : Observable<Contato[]>{    
+  //listarContatos() : Observable<Contato[]>{    
     //const headers = this.recuperaHeaderToken();
     //return this.http.get<Cliente[]>(`${this.apiURL}`, {headers}); 
-    return this.http.get<Contato[]>(`${this.apiURL}`);   
+  //  return this.http.get<Contato[]>(`${this.apiURL}`);   
+  //}
+
+  //Com paginator
+  listarContatos(page: any, size:any) : Observable<PaginaContato>{    
+    const params = new HttpParams().set('page', page).set('size', size);
+    return this.http.get<any>(`${this.apiURL}?${params.toString()}`);   
   }
 
   getContatoById(id : number) : Observable<Contato>{

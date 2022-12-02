@@ -59,6 +59,12 @@
                 <tr mat-row *matRowDef="let row; columns: colunas;"></tr>
 
             </table>
+            <mat-paginator [length]="totalElementos"
+              [pageSize]="tamanho"
+              [pageSizeOptions]="pageSizeOption"
+              (page)="paginar($event)"
+              aria-label="Select page">
+            </mat-paginator>
 
          
         </mat-card>       

@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
 import { ContatoDetalheComponent } from '../contato-detalhe/contato-detalhe.component'
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-contato',
@@ -16,6 +17,10 @@ export class ContatoComponent implements OnInit {
   formularioContato!: FormGroup;
   contatosList: Contato[] = [];
   colunas = ['foto','id','nome','email','favorito'];
+  totalElementos? = 0;
+  pagina = 0;
+  tamanho = 10;
+  pageSizeOption : number[] = [10];
 
   constructor(
     private service : ContatoService,
@@ -32,7 +37,7 @@ export class ContatoComponent implements OnInit {
     //this.formularioContato.controls.nome.errors.required
     
     this.montarFormulario();
-    this.listarContatos();
+    this.listarContatos(this.pagina, this.tamanho);
 
    
   }
@@ -44,8 +49,12 @@ export class ContatoComponent implements OnInit {
     })
   }
 
-  listarContatos(){
-    this.service.listarContatos().subscribe( response => this.contatosList = response);
+  listarContatos(pagina:any, tamanho:any){
+    this.service.listarContatos(pagina, tamanho).subscribe( response => {
+      this.contatosList = response.content;
+      this.totalElementos = response.totalElements;
+      this.pagina = response.number;
+    });
   }
 
   submit(){
@@ -69,7 +78,7 @@ export class ContatoComponent implements OnInit {
       const foto = files[0];
       const formData: FormData = new FormData();
       formData.append("foto", foto);
-      this.service.upload(contato, formData).subscribe(response => this.listarContatos());
+      this.service.upload(contato, formData).subscribe(response => this.listarContatos(this.pagina, this.tamanho));
     }
 
   }
@@ -80,6 +89,12 @@ export class ContatoComponent implements OnInit {
       height: '450px',
       data: contato
     })
+  }
+
+  paginar(event: PageEvent){
+    this.pagina = event.pageIndex;
+    this.listarContatos(this.pagina, this.tamanho);
+
   }
 
 }
