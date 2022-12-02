@@ -90,7 +90,8 @@
                 <br/>
             
                 <div *ngIf="formularioContato.controls['nome'].errors">
-                    <div *ngIf="formularioContato.controls['nome'].errors['required']">
+                    <div *ngIf="formularioContato.controls['nome'].errors['required'] 
+                    && !formularioContato.controls['nome'].pristine">
                         Campo nome obrigatório!
                     </div>
                 </div>
@@ -104,7 +105,8 @@
                 <br/>
             
                 <div *ngIf="formularioContato.controls['email'].errors">
-                    <div *ngIf="formularioContato.controls['email'].errors['required']">
+                    <div *ngIf="formularioContato.controls['email'].errors['required'] 
+                    && !formularioContato.controls['email'].pristine">
                         Campo email obrigatório!
                     </div>
                     <div *ngIf="formularioContato.controls['email'].errors['email']">
